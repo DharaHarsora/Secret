@@ -156,6 +156,44 @@ app.get("/secrets", function(req, res){
   }
 });
 
+app.get("/submit", function(req, res){
+  if (req.isAuthenticated()){
+    res.render("submit");
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/secrets", function(req, res){
+  userObj.find({"secret": {$ne: null}}, function(err, foundUsers){
+    if (err){
+      console.log(err);
+    } else {
+      if (foundUsers) {
+        res.render("secrets", {usersWithSecrets: foundUsers});
+      }
+    }
+  });
+});
+
+app.post("/submit", function(req, res){
+  const submittedSecret = req.body.secret;
+  // console.log(req.user.id);
+
+  userObj.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.secret = submittedSecret;
+        foundUser.save(function(){
+          res.redirect("/secrets");
+        });
+      }
+    }
+  });
+});
+
 app.post("/register", function(request, response){
   // In passport.local.mongoose register
   userObj.register({username: request.body.username}, request.body.password, function(err, user){
