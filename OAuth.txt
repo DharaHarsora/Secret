@@ -1,0 +1,8 @@
+Open Authorisation
+
+1. Granular Access levels
+2. Read / (Read + Write) Access
+3. Revoke Access
+
+Auth Code -> Succesfully login in facebook so generate authcode now we can signup in bracebook
+Access Token -> get data from 3rd party
